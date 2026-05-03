@@ -10,7 +10,7 @@ type DialogListType = {
 function DialogList({ total, selectedItems }: DialogListType) {
   return (
     <div className="bg-customRose100 rounded-md p-5">
-      <ul className="overflow-y-auto">
+      <ul>
         {selectedItems.map((item: Dessert) => {
           return (
             <li key={item.id}>

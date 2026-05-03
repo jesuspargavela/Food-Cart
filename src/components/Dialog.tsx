@@ -1,19 +1,20 @@
 import "./dialog.css";
 
 type DialogType = {
-  ref: React.Ref<HTMLDialogElement>;
   children: React.ReactNode;
+  isDialogOpen: boolean;
 };
 
-function Dialog({ ref, children }: DialogType) {
+function Dialog({ children, isDialogOpen }: DialogType) {
   return (
-    <dialog
-      ref={ref}
-      className="top-[2%] left-[35%] rounded-md p-10 w-140 h-fit"
-      closedby="any"
-    >
-      {children}
-    </dialog>
+    <>
+      <dialog
+        className="top-[35%] left-[35%] max-h-[80vh] w-140 overflow-y-auto rounded-md p-10"
+        open={isDialogOpen}
+      >
+        {children}
+      </dialog>
+    </>
   );
 }
 

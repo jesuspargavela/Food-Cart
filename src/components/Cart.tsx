@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useState } from "react";
 
 import CartList from "./CartList";
 import Dialog from "./Dialog";
@@ -17,23 +17,44 @@ function Cart() {
   const { setSelectedMap } = useSelectedMap();
   const { setCounterMap } = useCounterMap();
 
-  const dialogRef = useRef<HTMLDialogElement>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsDialogOpen(false);
+      }
+    };
+
+    if (isDialogOpen) {
+      document.body.classList.add("overflow-hidden");
+      document.addEventListener("keyup", handleEscape);
+    } else {
+      document.body.classList.remove("overflow-hidden");
+      document.removeEventListener("keyup", handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener("keyup", handleEscape);
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, [isDialogOpen]);
 
   const toggleDialog = () => {
-    if (dialogRef.current?.open) {
-      dialogRef.current?.close();
+    if (isDialogOpen) {
+      setIsDialogOpen(false);
       return;
     }
 
-    dialogRef.current?.showModal();
+    setIsDialogOpen(true);
   };
 
-  const closeDialog = () => {
+  const closeDialogAndRemoveInformation = () => {
     setTotal(0);
     setSelectedItems([]);
     setSelectedMap({});
     setCounterMap({});
-    dialogRef.current?.close();
+    setIsDialogOpen(false);
   };
 
   return (
@@ -52,23 +73,31 @@ function Cart() {
       >
         Confirm Order
       </button>
-      <Dialog ref={dialogRef}>
-        <img src="images/icon-order-confirmed.svg" alt="Order Confirmed" />
-        <h1 className="text-customRose900 mt-2 text-3xl font-bold">
-          Order Confirmed
-        </h1>
-        <h2 className="text-customRose500 mt-2 mb-7">
-          We hope you enjoy your food
-        </h2>
-        <DialogList selectedItems={selectedItems} total={total} />
-        <button
-          type="button"
-          className="text-customRose50 bg-customRed mt-5 h-13 w-full cursor-pointer rounded-3xl p-2"
-          onClick={closeDialog}
-        >
-          Start New Order
-        </button>
-      </Dialog>
+      {isDialogOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/50"
+            onClick={() => setIsDialogOpen(false)}
+          ></div>
+          <Dialog isDialogOpen={isDialogOpen}>
+            <img src="images/icon-order-confirmed.svg" alt="Order Confirmed" />
+            <h1 className="text-customRose900 mt-2 text-3xl font-bold">
+              Order Confirmed
+            </h1>
+            <h2 className="text-customRose500 mt-2 mb-7">
+              We hope you enjoy your food
+            </h2>
+            <DialogList selectedItems={selectedItems} total={total} />
+            <button
+              type="button"
+              className="text-customRose50 bg-customRed mt-5 h-13 w-full cursor-pointer rounded-3xl p-2"
+              onClick={closeDialogAndRemoveInformation}
+            >
+              Start New Order
+            </button>
+          </Dialog>
+        </>
+      )}
     </>
   );
 }
