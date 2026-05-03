@@ -5,23 +5,17 @@ import type { Dessert } from "../models/Dessert";
 import "./desserts-item.css";
 
 type DessertItemType = {
-  total: number;
-  setTotal: React.Dispatch<React.SetStateAction<number>>;
   dessert: Dessert;
   selected: boolean;
   setSelected: (value: boolean) => void;
-  setSelectedItems: React.Dispatch<React.SetStateAction<Dessert[]>>;
   counter: number;
   setCounter: (value: number) => void;
 };
 
 function DessertsItem({
-  total,
-  setTotal,
   dessert,
   selected,
   setSelected,
-  setSelectedItems,
   counter,
   setCounter,
 }: DessertItemType) {
@@ -38,9 +32,6 @@ function DessertsItem({
         setSelected={setSelected}
         counter={counter}
         setCounter={setCounter}
-        setSelectedItems={setSelectedItems}
-        total={total}
-        setTotal={setTotal}
       />
       <div className="mt-7">
         <h3 className="text-customRose500">{dessert.category}</h3>

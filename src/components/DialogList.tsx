@@ -14,7 +14,7 @@ function DialogList({ total, selectedItems }: DialogListType) {
         {selectedItems.map((item: Dessert) => {
           return (
             <li key={item.id}>
-              <div className="flex items-center justify-between p-2">
+              <div className="flex items-center justify-between p-3">
                 <div className="flex gap-2 items-center">
                   <img
                     className="h-16 w-16 rounded-md"

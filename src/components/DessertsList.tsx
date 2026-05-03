@@ -6,28 +6,16 @@ import type { Dessert } from "../models/Dessert";
 
 import { DESSERTS } from "../services/api";
 
+import { useCounterMap } from "../hooks/useCounterMap";
+import { useSelectedMap } from "../hooks/useSelectedMap";
+
 import "./desserts-list.css";
 
-type DessertsListType = {
-  total: number;
-  setTotal: React.Dispatch<React.SetStateAction<number>>;
-  setSelectedItems: React.Dispatch<React.SetStateAction<Dessert[]>>;
-  selectedMap: Record<string, boolean>;
-  setSelectedMap: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
-  counterMap: Record<string, number>;
-  setCounterMap: React.Dispatch<React.SetStateAction<Record<string, number>>>;
-};
-
-function DessertsList({
-  total,
-  setTotal,
-  setSelectedItems,
-  selectedMap,
-  setSelectedMap,
-  counterMap,
-  setCounterMap,
-}: DessertsListType) {
+function DessertsList() {
   const [desserts] = useState<Dessert[]>(DESSERTS);
+
+  const { selectedMap, setSelectedMap } = useSelectedMap();
+  const { counterMap, setCounterMap } = useCounterMap();
 
   return (
     <div className="grid grid-cols-3 gap-5">
@@ -43,9 +31,6 @@ function DessertsList({
           setCounter={(value: number) =>
             setCounterMap((prev) => ({ ...prev, [d.name]: value }))
           }
-          setSelectedItems={setSelectedItems}
-          total={total}
-          setTotal={setTotal}
         />
       ))}
     </div>

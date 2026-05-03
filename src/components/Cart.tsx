@@ -4,27 +4,19 @@ import CartList from "./CartList";
 import Dialog from "./Dialog";
 import DialogList from "./DialogList";
 
-import type { Dessert } from "../models/Dessert";
+import { useSelectedItems } from "../hooks/useSelectedItems";
+import { useTotal } from "../hooks/useTotal";
+import { useSelectedMap } from "../hooks/useSelectedMap";
+import { useCounterMap } from "../hooks/useCounterMap";
 
 import "./cart-container.css";
 
-type CartType = {
-  total: number;
-  setTotal: React.Dispatch<React.SetStateAction<number>>;
-  selectedItems: Dessert[];
-  setSelectedItems: React.Dispatch<React.SetStateAction<Dessert[]>>;
-  setSelectedMap: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
-  setCounterMap: React.Dispatch<React.SetStateAction<Record<string, number>>>;
-};
+function Cart() {
+  const { selectedItems, setSelectedItems } = useSelectedItems();
+  const { total, setTotal } = useTotal();
+  const { setSelectedMap } = useSelectedMap();
+  const { setCounterMap } = useCounterMap();
 
-function Cart({
-  total,
-  setTotal,
-  selectedItems,
-  setSelectedItems,
-  setSelectedMap,
-  setCounterMap,
-}: CartType) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const toggleDialog = () => {
@@ -46,14 +38,7 @@ function Cart({
 
   return (
     <>
-      <CartList
-        selectedItems={selectedItems}
-        setSelectedItems={setSelectedItems}
-        total={total}
-        setTotal={setTotal}
-        setSelectedMap={setSelectedMap}
-        setCounterMap={setCounterMap}
-      />
+      <CartList />
       <div className="bg-customRose100 text-customRose900 mt-5 flex justify-center gap-2 rounded-sm p-3">
         <img src="images/icon-carbon-neutral.svg" alt="Carbon Neutral" />
         <p>
@@ -69,10 +54,12 @@ function Cart({
       </button>
       <Dialog ref={dialogRef}>
         <img src="images/icon-order-confirmed.svg" alt="Order Confirmed" />
-        <h1 className="text-customRose900 text-3xl font-bold mt-2">
+        <h1 className="text-customRose900 mt-2 text-3xl font-bold">
           Order Confirmed
         </h1>
-        <h2 className="text-customRose500 mt-2 mb-7">We hope you enjoy your food</h2>
+        <h2 className="text-customRose500 mt-2 mb-7">
+          We hope you enjoy your food
+        </h2>
         <DialogList selectedItems={selectedItems} total={total} />
         <button
           type="button"

@@ -1,24 +1,18 @@
+import { useCounterMap } from "../hooks/useCounterMap";
+import { useSelectedItems } from "../hooks/useSelectedItems";
+import { useSelectedMap } from "../hooks/useSelectedMap";
+import { useTotal } from "../hooks/useTotal";
+
 import type { Dessert } from "../models/Dessert";
 
 import "./cart-list.css";
 
-type CartListType = {
-  total: number;
-  setTotal: React.Dispatch<React.SetStateAction<number>>;
-  selectedItems: Dessert[];
-  setSelectedItems: React.Dispatch<React.SetStateAction<Dessert[]>>;
-  setSelectedMap: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
-  setCounterMap: React.Dispatch<React.SetStateAction<Record<string, number>>>;
-};
+function CartList() {
+  const { selectedItems, setSelectedItems } = useSelectedItems();
+  const { total, setTotal } = useTotal();
+  const { setSelectedMap } = useSelectedMap();
+  const { setCounterMap } = useCounterMap();
 
-function CartList({
-  total,
-  setTotal,
-  selectedItems,
-  setSelectedItems,
-  setSelectedMap,
-  setCounterMap,
-}: CartListType) {
   return (
     <>
       <ul>
